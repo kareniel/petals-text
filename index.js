@@ -1,11 +1,15 @@
 #!/usr/bin/env node
 
-var fs = require('fs')
 var readline = require('readline')
 var cursor = require('cli-cursor')
+var mkdirp = require('mkdirp')
 var chalk = require('chalk')
+var path = require('path')
 var util = require('util')
+var fs = require('fs')
 var log = console.log
+
+mkdirp.sync('data')
 
 process.stdin.setRawMode(true)
 readline.emitKeypressEvents(process.stdin)
@@ -22,7 +26,8 @@ var keylog = function (str, key) {
 }
 
 class Menu {
-  constructor (choices) {
+  constructor (title, choices) {
+    this.title = title
     this.choices = choices
     this.current = 0
     this.lines = ''
@@ -50,6 +55,7 @@ class Menu {
       if (key.name === 'return') {
         var choice = this.choices[this.current]
 
+        this.clear()
         choice.action()
 
         return
@@ -72,7 +78,7 @@ class Menu {
 
     var lines = ''
 
-    lines += '\nMain Menu\n\n'
+    lines += `\n${this.title}\n\n`
 
     var highlighted, cursor, color
 
@@ -95,11 +101,13 @@ class App {
   constructor () {
     log('terminu v0.1')
 
+    this.files = openSaveFiles()
+
     this.state = {
       lastSaved: null
     }
 
-    this.menu = new Menu([{
+    this.menu = new Menu('Main Menu', [{
       name: 'New',
       action: function () {
 
@@ -107,7 +115,26 @@ class App {
     }, {
       name: 'Load',
       action: function () {
+        var choices = this.files.map(file => {
+          var lines = file.split('\n')
+          var name = lines.pop(0)
+          var lastIndex = lines.length - 1
+          var data = lines[lastIndex]
 
+          return {
+            name,
+            action: () => {
+              debug('\n\n\n', 'data', data, '\n\n\n')
+              process.exit()
+            }
+          }
+        })
+
+        console.log(choices)
+
+        var loadMenu = new Menu('Load', choices)
+
+        loadMenu.open()
       }
     }, {
       name: 'Exit',
@@ -121,9 +148,8 @@ class App {
   start () {
     process.stdin.on('keypress', (str, key) => {
       if (key.ctrl && key.name === 'c') return process.exit()
-      // if (['tab', 'escape'].includes(key.name)) return this.menu.open()
-      // if (key.ctrl && 's') return this.save()
     })
+
     this.menu.open()
   }
 
@@ -143,6 +169,24 @@ class App {
     var state = JSON.parse(points[lastIndex])
     this.state = state
   }
+}
+
+function openSaveFiles () {
+  var opts = { flag: 'a', encoding: 'utf8' }
+
+  return Array(3).fill(0).map((_, index) => {
+    var filepath = path.join(__dirname, `/data/${index + 1}.txt`)
+
+    try {
+      var file = fs.readFileSync(filepath, opts)
+
+      return file
+    } catch (err) {
+      debug(err)
+      fs.writeFileSync(filepath, 'No Data')
+      return 'No Data'
+    }
+  })
 }
 
 new App().start()
