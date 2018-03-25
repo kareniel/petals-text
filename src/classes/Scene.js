@@ -1,6 +1,9 @@
 class Scene {
-  constructor (enter) {
-    this.enter = enter
+  constructor (config) {
+    var { render, menus } = config
+
+    this.render = render
+    this.menus = menus
   }
 }
 

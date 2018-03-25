@@ -1,13 +1,25 @@
 var Menu = require('../classes/Menu')
-var Load = require('./load-menu.js')
+var Scene = require('../classes/Scene')
+var loadMenu = require('./load-menu.js')
 
-Menu.UNTITLED = ''
+module.exports = mainMenu
 
-module.exports = new Menu(Menu.UNTITLED, function () {
+function mainMenu () {
+  this.game.menu('load', loadMenu)
+
   var choices = [{
     name: 'Start',
     action: () => {
-      this.game.openMenu(Load)
+      var scene = {
+        render: (renderer, cb) => {
+          cb()
+        },
+        menus: [
+          this.game.menus['load']
+        ]
+      }
+
+      this.game.go(new Scene(scene))
     }
   }, {
     name: 'Exit',
@@ -17,4 +29,4 @@ module.exports = new Menu(Menu.UNTITLED, function () {
   }]
 
   return choices
-})
+}

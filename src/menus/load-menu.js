@@ -3,7 +3,9 @@ var path = require('path')
 var Menu = require('../classes/Menu')
 const { DATA_FOLDER, DEFAULT_STATE } = require('../constants')
 
-module.exports = new Menu('Select file', function () {
+module.exports = loadMenu
+
+function loadMenu () {
   var files = openSaveFiles()
 
   var choices = files.map((file, i) => {
@@ -22,7 +24,7 @@ module.exports = new Menu('Select file', function () {
   })
 
   return choices
-})
+}
 
 function openSaveFiles () {
   var opts = { flag: 'a', encoding: 'utf8' }

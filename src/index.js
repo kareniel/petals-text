@@ -8,7 +8,6 @@ var game = new Game('Lord of Petals', {
   defaultState: DEFAULT_STATE
 })
 
-game.registerScene(require('./scenes/entry'))
-game.registerMenu(require('./menus/main-menu'))
+game.scene('intro', require('./scenes/intro'))
 
 game.start()
