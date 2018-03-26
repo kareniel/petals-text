@@ -54,7 +54,7 @@ class Game {
     this._render(scene)
   }
 
-  handleKeypress (str, key) {
+  handleKeypress (str, key) {
     if (key.ctrl && key.name === 'c') return this.exit()
 
     if (this.currentMenu) {
@@ -136,8 +136,8 @@ class Game {
     var { columns } = process.stdout
 
     readline.cursorTo(process.stdout, 0, columns)
-    this.renderer.cursor.move(0, (-numberOfLines + 1))
-    readline.clearScreenDown(process.stdin)
+    readline.moveCursor(process.stdout, 0, -numberOfLines + 1)
+    readline.clearScreenDown(process.stdout)
   }
 
   _setup () {
