@@ -1,30 +1,17 @@
 var readline = require('readline')
 var series = require('run-series')
 
-var Menu = require('../classes/Menu')
-
 const DEFAULT_PRINT_DELAY = 0.05
 
-var menu = new Menu(function () {
-  var choices = [{
-    name: 'Exit',
-    action: () => {
-      this.game.exit()
-    }
-  }]
+module.exports = renderScene
 
-  return choices
-})
+function renderScene (renderer, cb) {
+  var messages = [
+    ['...', 0.5],
+    ['...Hello?']
+  ]
 
-module.exports = {
-  render: function render (renderer, cb) {
-    var messages = [
-      ['...', 0.5],
-      ['...Hello?']
-    ]
-    printMessages(messages, renderer, cb)
-  },
-  menus: [ menu ]
+  printMessages(messages, renderer, cb)
 }
 
 function printMessages (messages, renderer, callback) {

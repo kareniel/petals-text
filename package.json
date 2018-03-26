@@ -1,10 +1,12 @@
 {
-  "name": "petals-term",
+  "name": "petals-engine",
   "version": "0.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src",
+    "test": "npm run lint",
+    "lint": "npm run standard"
   },
   "author": "kareniel",
   "license": "MIT",
@@ -12,14 +14,12 @@
     "petals": "./index.js"
   },
   "dependencies": {
-    "blessed": "^0.1.81",
     "cli-cursor": "^2.1.0",
-    "inquirer": "^5.1.0",
     "mkdirp": "^0.5.1",
-    "run-series": "^1.1.6",
-    "vorpal": "^1.12.0"
+    "run-series": "^1.1.6"
   },
   "devDependencies": {
-    "chalk": "^2.3.2"
+    "chalk": "^2.3.2",
+    "standard": "^11.0.1"
   }
 }

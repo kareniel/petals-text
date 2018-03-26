@@ -27,7 +27,7 @@ function loadMenu () {
 }
 
 function openSaveFiles () {
-  var opts = { flag: 'a', encoding: 'utf8' }
+  var opts = { encoding: 'utf8' }
 
   return Array(3).fill(0).map((_, index) => {
     var filepath = path.join(DATA_FOLDER, `${index + 1}.txt`)
