@@ -11,7 +11,7 @@
   "author": "kareniel",
   "license": "MIT",
   "bin": {
-    "petals": "./index.js"
+    "petals": "./src/index.js"
   },
   "dependencies": {
     "cli-cursor": "^2.1.0",
